@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>New Mortgage | Krishna Jewelers</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    /* ===============================
+GLOBAL
+================================ */
+
+body{
+font-family:"Poppins","Segoe UI",Arial,sans-serif;
+background:#f4f6f9;
+margin:0;
+padding:0;
+color:#111;
+}
+
+/* ===============================
+MAIN LAYOUT
+================================ */
+
+.main-content{
+margin-left:260px;
+padding:30px;
+}
+
+/* ===============================
+HEADER
+================================ */
+
+.page-title{
+font-size:24px;
+font-weight:600;
+color:#111;
+}
+
+.page-sub{
+font-size:13px;
+color:#6b7280;
+margin-top:4px;
+}
+
+/* ===============================
+CARDS (RANKA STYLE)
+================================ */
+
+.card{
+background:white;
+border-radius:10px;
+padding:22px;
+margin-bottom:22px;
+border:1px solid #e5e7eb;
+box-shadow:0 3px 8px rgba(0,0,0,0.05);
+}
+
+/* section headings */
+
+.card h3{
+font-size:16px;
+font-weight:600;
+color:#111;
+}
+
+/* ===============================
+FORM
+================================ */
+
+.label{
+font-size:12px;
+font-weight:600;
+color:#374151;
+margin-bottom:4px;
+display:block;
+}
+
+/* inputs */
+
+.form-input{
+width:100%;
+padding:9px 10px;
+font-size:14px;
+border-radius:6px;
+border:1px solid #d1d5db;
+background:#fff;
+transition:0.2s;
+}
+
+.form-input:focus{
+outline:none;
+border-color:#facc15;
+box-shadow:0 0 0 2px rgba(250,204,21,0.2);
+}
+
+/* ===============================
+BUTTONS
+================================ */
+
+.btn-primary{
+background:#111;
+color:#fff;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+font-weight:500;
+transition:0.2s;
+}
+
+.btn-primary:hover{
+background:#000;
+color:#facc15;
+}
+
+/* registry button */
+
+.select-btn{
+background:#fef9c3;
+color:#92400e;
+border:1px solid #fde68a;
+padding:5px 10px;
+border-radius:6px;
+font-size:12px;
+}
+
+/* add item */
+
+#add-item-btn{
+background:#facc15;
+color:#111;
+border:none;
+padding:6px 12px;
+border-radius:6px;
+font-size:13px;
+font-weight:500;
+}
+
+#add-item-btn:hover{
+background:#eab308;
+}
+
+/* ===============================
+ITEM ROW
+================================ */
+
+.item-row{
+background:#f9fafb;
+border-radius:8px;
+border:1px solid #e5e7eb;
+}
+
+/* ===============================
+SIGNATURE
+================================ */
+
+#signature-pad{
+border:1px solid #d1d5db;
+border-radius:8px;
+background:white;
+cursor:crosshair;
+}
+
+/* ===============================
+TABLE
+================================ */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead{
+background:#f9fafb;
+}
+
+thead th{
+font-size:12px;
+font-weight:600;
+color:#6b7280;
+padding:8px;
+text-align:left;
+}
+
+tbody td{
+padding:8px;
+font-size:13px;
+}
+
+/* ===============================
+RESPONSIVE
+================================ */
+
+@media (max-width:768px){
+
+.main-content{
+margin-left:0;
+padding:18px;
+}
+
+.card{
+padding:16px;
+}
+
+}
+
+/* ===============================
+PRINT
+================================ */
+
+@media print{
+
+@page{
+size:A4;
+margin:5mm;
+}
+
+.sidebar,
+.btn-primary,
+.no-print,
+#add-item-btn{
+display:none !important;
+}
+
+body{
+background:white;
+font-size:11px;
+border:2px solid #000;
+padding:10mm;
+box-sizing:border-box;
+}
+
+.main-content{
+margin-left:0;
+padding:0;
+}
+
+.card{
+border:none;
+box-shadow:none;
+padding:10px;
+margin-bottom:8px;
+page-break-inside:avoid;
+}
+
+h1{
+font-size:16px !important;
+}
+
+h3{
+font-size:13px !important;
+}
+
+.label{
+font-size:10px !important;
+}
+
+.form-input{
+font-size:10px !important;
+padding:4px !important;
+border:1px solid #999;
+}
+
+.grid{
+display:grid !important;
+grid-template-columns:1fr 1fr !important;
+gap:6px !important;
+}
+
+textarea{
+grid-column:span 2 !important;
+height:40px !important;
+}
+
+.item-row{
+grid-template-columns:repeat(4,1fr) !important;
+padding:6px !important;
+}
+
+#signature-pad{
+height:80px !important;
+}
+
+}
+</style>
+
+</head>
+
+<body class="bg-gray-50">
+
+<button class="menu-btn no-print" onclick="toggleSidebar()">
+☰
+</button>
+
+<div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<div id="sidebar-container" class="sidebar no-print"></div>
+
+<div class="main-content">
+
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+
+<div>
+<h1 class="text-2xl font-bold text-slate-900">
+Create Mortgage Entry / गिरवी एंट्री बनाएं
+</h1>
+
+<p class="text-sm text-slate-500">
+Krishna Jewelers - Invoice & Mortgage Management
+</p>
+</div>
+
+<button onclick="window.print()" class="no-print bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 rounded-lg flex items-center gap-2 transition">
+Print Receipt / रसीद प्रिंट करें
+</button>
+
+</div>
+
+<form id="mortgage-form" class="max-w-5xl mx-auto">
+
+<!-- Customer Information -->
+<div class="card">
+
+<div class="flex justify-between items-center mb-4 border-b pb-2">
+
+<h3 class="font-bold text-slate-700">
+Customer Info / ग्राहक की जानकारी
+</h3>
+
+<button type="button"
+onclick="openCustomerModal()"
+class="text-sm bg-blue-50 text-blue-700 px-3 py-1 rounded border no-print">
+
+Select from Registry / सूची से चुनें
+
+</button>
+
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+<label class="label">
+Created Date / दिनांक
+</label>
+
+<input
+id="createdAt"
+type="date"
+class="form-input">
+</div>
+<input type="hidden" id="customerId">
+<div>
+<label class="label">
+Customer Name / ग्राहक का नाम
+</label>
+
+<input id="cName" class="form-input" placeholder="Customer Name / नाम" required>
+</div>
+
+<div>
+<label class="label">
+Father Name / पिता का नाम
+</label>
+
+<input id="cFather" class="form-input" placeholder="Father Name / पिता का नाम">
+</div>
+
+<div>
+<label class="label">
+Phone Number / मोबाइल नंबर
+</label>
+
+<input id="cPhone" class="form-input" placeholder="Mobile Number / मोबाइल नंबर">
+</div>
+
+<div>
+<label class="label">
+Aadhar Number / आधार नंबर
+</label>
+
+<input id="cAadhar" class="form-input" placeholder="Aadhar Number / आधार नंबर">
+</div>
+
+<div class="md:col-span-2">
+<label class="label">
+Address / पता
+</label>
+
+<textarea id="cAddress" class="form-input" placeholder="Customer Address / पूरा पता"></textarea>
+</div>
+
+</div>
+
+</div>
+
+<!-- Item Details -->
+
+<div class="card">
+
+<div class="flex justify-between items-center mb-4 border-b pb-2">
+
+<h3 class="font-bold text-slate-700">
+Item Details / सामान की जानकारी
+</h3>
+
+<button type="button" id="add-item-btn"
+class="text-sm bg-amber-50 text-amber-700 px-3 py-1 rounded border">
+
++ Add Item / सामान जोड़ें
+
+</button>
+
+</div>
+
+<div id="items-list" class="space-y-4">
+
+<div class="mt-6 pt-4 border-t">
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+<div>
+<label class="label">
+Estimated Value / अनुमानित कीमत
+</label>
+
+<input id="estValue" class="form-input" placeholder="Estimated Value / कीमत">
+</div>
+
+<div>
+<label class="label">
+Amount Paid / भुगतान राशि
+</label>
+
+<input id="amountPaid" class="form-input" placeholder="Amount Paid / भुगतान राशि">
+</div>
+
+</div>
+</div>
+
+<!-- ITEMS CONTAINER -->
+<div id="items-container">
+
+<div class="item-row grid grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-slate-50 rounded-lg">
+
+<input placeholder="Item Name / सामान का नाम" class="form-input item-name">
+
+<input type="number" placeholder="Gross Wt / कुल वजन" class="form-input item-gross">
+
+<input type="number" placeholder="Net Wt / शुद्ध वजन" class="form-input item-net">
+
+<input placeholder="Purity / शुद्धता" class="form-input item-purity">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Signature -->
+
+<div class="card">
+
+<h3 class="font-bold mb-4 text-slate-700 border-b pb-2">
+Customer Signature / ग्राहक हस्ताक्षर
+</h3>
+
+<canvas id="signature-pad"
+class="border w-full h-40 bg-white rounded touch-none"></canvas>
+
+<button type="button" id="clear-sign"
+class="mt-2 text-sm bg-gray-200 px-3 py-1 rounded">
+
+Clear Signature / हस्ताक्षर मिटाएं
+
+</button>
+
+</div>
+
+<button type="submit"
+class="btn-primary w-full md:w-auto px-12 py-4 mt-6">
+
+Save Mortgage / गिरवी सेव करें
+
+</button>
+
+</form>
+
+</div>
+<div id="customerModal"
+class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+
+<div class="bg-white rounded-lg w-[90%] max-w-2xl p-6">
+
+<div class="flex justify-between mb-4">
+
+<h2 class="text-lg font-semibold">
+Select Customer / ग्राहक चुनें
+</h2>
+
+<button onclick="closeCustomerModal()">✕</button>
+
+</div>
+
+<table class="w-full text-left">
+
+<thead>
+<tr class="border-b text-sm text-slate-500">
+<th>Name</th>
+<th>Phone</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="customer-registry"></tbody>
+
+</table>
+
+</div>
+
+</div>
+<script src="api.js"></script>
+
+<script>
+    function setTodayDate(){
+
+const today = new Date().toISOString().split('T')[0];
+
+document.getElementById("createdAt").value = today;
+
+}
+
+document.addEventListener("DOMContentLoaded", setTodayDate);
+async function openCustomerModal(){
+
+document.getElementById("customerModal").classList.remove("hidden");
+document.getElementById("customerModal").classList.add("flex");
+
+const res = await ApiService.getAllCustomers();
+
+const list = document.getElementById("customer-registry");
+
+list.innerHTML="";
+
+(res.data || []).forEach(c=>{
+
+list.innerHTML += `
+
+<tr class="border-b text-sm">
+
+<td class="py-2">${c.name}</td>
+<td>${c.phoneNumber}</td>
+
+<td>
+<button
+onclick="selectCustomer(${c.id},
+'${c.name}',
+'${c.fatherName}',
+'${c.phoneNumber}',
+'${c.aadharNumber}',
+'${c.address}')"
+
+class="bg-blue-500 text-white text-xs px-2 py-1 rounded">
+
+Select
+
+</button>
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+function closeCustomerModal(){
+
+document.getElementById("customerModal").classList.add("hidden");
+document.getElementById("customerModal").classList.remove("flex");
+
+}
+
+function selectCustomer(id,name,father,phone,aadhar,address){
+
+document.getElementById("customerId").value = id;
+
+document.getElementById("cName").value = name || "";
+document.getElementById("cFather").value = father || "";
+document.getElementById("cPhone").value = phone || "";
+document.getElementById("cAadhar").value = aadhar || "";
+document.getElementById("cAddress").value = address || "";
+
+closeCustomerModal();
+
+}
+loadSidebar();
+
+const itemsList = document.getElementById('items-container');
+const addItemBtn = document.getElementById('add-item-btn');
+
+addItemBtn.addEventListener('click', () => {
+
+const newRow = document.createElement('div');
+
+newRow.className =
+"item-row grid grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-slate-50 rounded-lg relative border-t md:border-t-0";
+
+newRow.innerHTML = `
+
+<div>
+<input placeholder="Item Name / सामान का नाम"
+class="form-input item-name mb-0">
+</div>
+
+<div>
+<input type="number" step="0.01"
+placeholder="Gross Wt / कुल वजन"
+class="form-input item-gross mb-0">
+</div>
+
+<div>
+<input type="number" step="0.01"
+placeholder="Net Wt / शुद्ध वजन"
+class="form-input item-net mb-0">
+</div>
+
+<div>
+<input placeholder="Purity / शुद्धता"
+class="form-input item-purity mb-0">
+</div>
+
+<button type="button"
+onclick="this.parentElement.remove()"
+class="absolute -right-2 -top-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs no-print">
+
+×
+
+</button>
+`;
+
+itemsList.appendChild(newRow);
+
+});
+
+document.getElementById('mortgage-form').onsubmit = async (e) => {
+
+e.preventDefault();
+
+const itemElements = document.querySelectorAll('.item-row');
+
+const items = Array.from(itemElements).map(row => ({
+
+name: row.querySelector('.item-name').value,
+
+grossWeight: parseFloat(row.querySelector('.item-gross').value || 0),
+
+netWeight: parseFloat(row.querySelector('.item-net').value || 0),
+
+purity: row.querySelector('.item-purity').value
+
+}));
+
+const canvas = document.getElementById("signature-pad");
+
+const signatureBase64 = canvas.toDataURL();
+
+const formData = {
+
+customerDetails: {
+
+id: document.getElementById("customerId").value || null,
+name: document.getElementById('cName').value,
+
+fatherName: document.getElementById('cFather').value,
+
+address: document.getElementById('cAddress').value,
+
+phoneNumber: document.getElementById('cPhone').value,
+
+aadharNumber: document.getElementById('cAadhar').value
+
+},
+
+itemList: items,
+
+estValue: parseInt(document.getElementById('estValue').value || 0),
+amountPaid: parseInt(document.getElementById('amountPaid').value || 0),
+createdAt: document.getElementById('createdAt').value,
+signatureBase64: signatureBase64,
+
+settled:false
+
+};
+
+try{
+if(mortgageId){
+formData.id = mortgageId;
+}
+await ApiService.saveMortgage(formData);
+
+alert("Mortgage Saved Successfully / गिरवी सफलतापूर्वक सेव हुई");
+window.location.href = "morgate.html";
+}catch(err){
+
+alert("Error Saving Mortgage / गिरवी सेव नहीं हुई");
+
+}
+
+};
+function fillAmountPaid(val){
+
+document.getElementById("amountPaid").value = val ? val.toString() : "";
+
+}
+function fillCreatedAt(date){
+
+if(!date) return;
+
+const d = new Date(date).toISOString().split('T')[0];
+
+document.getElementById("createdAt").value = d;
+
+}
+
+const canvas = document.getElementById("signature-pad");
+const ctx = canvas.getContext("2d");
+
+/* Fix canvas resolution */
+function resizeCanvas() {
+
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+
+    ctx.scale(ratio, ratio);
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+
+/* Drawing logic */
+
+let drawing = false;
+
+function startDraw(e) {
+    drawing = true;
+    draw(e);
+}
+
+function endDraw() {
+    drawing = false;
+    ctx.beginPath();
+}
+
+function draw(e) {
+
+    if (!drawing) return;
+
+    const rect = canvas.getBoundingClientRect();
+
+    let x, y;
+
+    if (e.touches) {
+        x = e.touches[0].clientX - rect.left;
+        y = e.touches[0].clientY - rect.top;
+    } else {
+        x = e.clientX - rect.left;
+        y = e.clientY - rect.top;
+    }
+
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#000";
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+}
+
+
+/* Mouse events */
+
+canvas.addEventListener("mousedown", startDraw);
+canvas.addEventListener("mouseup", endDraw);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseleave", endDraw);
+
+
+/* Touch events (mobile support) */
+
+canvas.addEventListener("touchstart", startDraw);
+canvas.addEventListener("touchend", endDraw);
+canvas.addEventListener("touchmove", draw);
+
+
+/* Clear button */
+
+document.getElementById("clear-sign").onclick = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+};
+// ================================
+// VIEW MODE SUPPORT
+// ================================
+
+const urlParams = new URLSearchParams(window.location.search);
+const mortgageId = urlParams.get("id");
+
+document.addEventListener("DOMContentLoaded", () => {
+if(mortgageId){
+    loadMortgage(mortgageId);
+}
+});
+
+async function loadMortgage(id){
+
+try{
+
+const res = await ApiService.getMortgageById(id);
+const data = res.data;
+fillCustomer(data.customerDetails);
+fillItems(data.itemList);
+fillEstValue(data.estValue);
+fillAmountPaid(data.amountPaid);
+fillCreatedAt(data.createdAt);
+loadSignature(data.signatureBase64);
+}catch(e){
+console.log(e);
+alert("Failed to load mortgage" + e.message);
+}
+
+}
+
+
+// ================================
+// FILL CUSTOMER
+// ================================
+
+function fillCustomer(c){
+
+document.getElementById("cName").value = c.name || "";
+document.getElementById("cFather").value = c.fatherName || "";
+document.getElementById("cPhone").value = c.phoneNumber || "";
+document.getElementById("cAadhar").value = c.aadharNumber || "";
+document.getElementById("cAddress").value = c.address || "";
+
+}
+
+
+// ================================
+// FILL ITEMS
+// ================================
+function fillItems(items){
+
+const itemsList = document.getElementById("items-container");
+
+itemsList.innerHTML = "";
+
+items.forEach(i => {
+
+const row = document.createElement("div");
+
+row.className =
+"item-row grid grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-slate-50 rounded-lg relative";
+
+row.innerHTML = `
+
+<input class="form-input item-name" value="${i.name || ''}">
+
+<input class="form-input item-gross" value="${i.grossWeight || ''}">
+
+<input class="form-input item-net" value="${i.netWeight || ''}">
+
+<input class="form-input item-purity" value="${i.purity || ''}">
+
+<button type="button"
+onclick="this.parentElement.remove()"
+class="absolute -right-2 -top-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs no-print">
+
+×
+
+</button>
+`;
+
+itemsList.appendChild(row);
+
+});
+
+}
+
+// ================================
+// EST VALUE
+// ================================
+
+function fillEstValue(val){
+
+document.getElementById("estValue").value = val ? val.toString() : "";
+
+}
+
+
+// ================================
+// SIGNATURE
+// ================================
+
+function loadSignature(base64){
+
+if(!base64) return;
+
+const canvas = document.getElementById("signature-pad");
+const ctx = canvas.getContext("2d");
+
+const img = new Image();
+
+img.onload = () => {
+
+ctx.drawImage(img,0,0,canvas.width,canvas.height);
+
+};
+
+img.src = base64;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+/* =========================
+RANKA SIDEBAR THEME
+========================= */
+
+.sidebar{
+width:260px;
+background:#111111;
+color:white;
+height:100vh;
+position:fixed;
+left:0;
+top:0;
+display:flex;
+flex-direction:column;
+transition:0.3s;
+z-index:1000;
+}
+
+/* inner */
+
+.sidebar-inner{
+display:flex;
+flex-direction:column;
+height:100%;
+}
+
+/* brand */
+
+.brand{
+padding:24px 20px;
+border-bottom:1px solid rgba(255,255,255,0.08);
+text-align:center;
+}
+
+.brand-title{
+font-size:28px;
+font-family:'Great Vibes', cursive;
+color:#facc15;
+margin:0;
+text-align:center;
+letter-spacing:1px;
+}
+
+.brand-sub{
+font-size:11px;
+color:#aaa;
+margin-top:6px;
+line-height:1.4;
+}
+
+/* menu */
+
+.menu{
+flex:1;
+padding:20px 14px;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.menu-item{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:6px;
+padding:14px;
+border-radius:10px;
+text-decoration:none;
+color:#e5e7eb;
+margin-bottom:10px;
+transition:all 0.25s;
+width:100%;
+text-align:center;
+}
+
+/* icon */
+
+.menu-item .icon{
+font-size:20px;
+}
+
+/* text */
+
+.menu-text{
+font-size:14px;
+line-height:1.2;
+text-align:center;
+}
+
+.menu-text span{
+display:block;
+font-size:11px;
+color:#9ca3af;
+margin-top:3px;
+}
+
+/* hover */
+
+.menu-item:hover{
+background:#1f2937;
+color:#facc15;
+}
+
+/* active */
+
+.menu-item.active{
+background:#1f2937;
+color:#facc15;
+border-left:3px solid #facc15;
+}
+
+/* footer */
+
+.sidebar-footer{
+padding:16px;
+font-size:11px;
+text-align:center;
+color:#9ca3af;
+border-top:1px solid rgba(255,255,255,0.08);
+}
+
+
+/* =========================
+MAIN CONTENT
+========================= */
+
+.main-content{
+margin-left:260px;
+padding:2rem;
+transition:0.3s;
+}
+
+
+/* =========================
+MENU BUTTON
+========================= */
+
+.menu-btn{
+display:none;
+position:fixed;
+top:15px;
+left:15px;
+background:#111;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+font-size:20px;
+z-index:1100;
+}
+
+
+/* =========================
+OVERLAY
+========================= */
+
+.sidebar-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.45);
+display:none;
+z-index:900;
+}
+
+
+/* =========================
+MOBILE RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+.sidebar{
+left:-260px;
+}
+
+.sidebar.open{
+left:0;
+}
+
+.main-content{
+margin-left:0;
+padding:1rem;
+}
+
+.menu-btn{
+display:block;
+}
+
+}
