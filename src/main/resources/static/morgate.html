@@ -14,7 +14,12 @@
     /* ===============================
 GLOBAL
 ================================ */
-
+#proprietorLogo {
+    height: 100px;   /* larger height */
+    width: auto;
+    object-fit: contain;
+    display: block; /* remove Tailwind hidden when needed */
+}
 body{
 font-family:"Poppins","Segoe UI",Arial,sans-serif;
 background:#f4f6f9;
@@ -213,79 +218,120 @@ padding:16px;
 PRINT
 ================================ */
 
-@media print{
+/* ===============================
+PRINT STYLES
+================================ */
+@media print {
+    @page {
+        size: A4;
+        margin: 5mm;
+    }
 
-@page{
-size:A4;
-margin:5mm;
+    /* Hide non-essential UI */
+    .sidebar,
+    .menu-btn,
+    .btn-primary,
+    .no-print,
+    #add-item-btn {
+        display: none !important;
+    }
+
+    /* Body clean up */
+    body {
+        background: white !important;
+        font-size: 11px;
+        color: #111;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    /* Main content takes full width */
+    .main-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Cards without borders or shadows */
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 5px 0 !important;
+        margin-bottom: 5px !important;
+        page-break-inside: avoid;
+    }
+
+    /* Headings smaller */
+    h1, h2, h3 {
+        color: #111;
+        margin: 2px 0 !important;
+        page-break-after: avoid;
+    }
+    h1 { font-size: 16px !important; }
+    h3 { font-size: 13px !important; }
+
+    /* Labels & inputs */
+    .label {
+        font-size: 10px !important;
+        margin-bottom: 2px !important;
+    }
+    .form-input, textarea {
+        font-size: 10px !important;
+        padding: 4px !important;
+         border: none !important;
+        background: transparent !important; /* optional, to match page background */
+        resize: none !important; /* optional, prevent resize handles in print */
+        background: #fff !important;
+    }
+
+    /* Grid for 2-column layout */
+    .grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 4px !important;
+    }
+
+    textarea {
+        grid-column: span 2 !important;
+        height: 40px !important;
+    }
+
+    /* Items rows */
+    .item-row {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 4px !important;
+        padding: 4px !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* Signature pad smaller */
+    #signature-pad {
+        height: 60px !important;
+        border: 1px solid #000 !important;
+    }
+/* Proprietor Logo at top-right */
+#proprietorLogo {
+    position: absolute;
+    top: 10mm;
+    right: 10mm;
+    height: 100px !important;  /* increased size */
+    width: auto;
+    object-fit: contain;        /* maintain aspect ratio */
+    z-index: 10;                /* ensure it prints above other elements */
 }
 
-.sidebar,
-.btn-primary,
-.no-print,
-#add-item-btn{
-display:none !important;
-}
-
-body{
-background:white;
-font-size:11px;
-border:2px solid #000;
-padding:10mm;
-box-sizing:border-box;
-}
-
-.main-content{
-margin-left:0;
-padding:0;
-}
-
-.card{
-border:none;
-box-shadow:none;
-padding:10px;
-margin-bottom:8px;
-page-break-inside:avoid;
-}
-
-h1{
-font-size:16px !important;
-}
-
-h3{
-font-size:13px !important;
-}
-
-.label{
-font-size:10px !important;
-}
-
-.form-input{
-font-size:10px !important;
-padding:4px !important;
-border:1px solid #999;
-}
-
-.grid{
-display:grid !important;
-grid-template-columns:1fr 1fr !important;
-gap:6px !important;
-}
-
-textarea{
-grid-column:span 2 !important;
-height:40px !important;
-}
-
-.item-row{
-grid-template-columns:repeat(4,1fr) !important;
-padding:6px !important;
-}
-
-#signature-pad{
-height:80px !important;
-}
-
+    /* Tables clean */
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+    thead, tbody, th, td {
+        border: 1px solid #999 !important;
+        padding: 4px !important;
+        font-size: 10px !important;
+    }
 }
 </style>
 
@@ -303,26 +349,27 @@ height:80px !important;
 
 <div class="main-content">
 
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+<div class="flex justify-between items-start md:items-center mb-6 gap-4">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-900">
+        Create Mortgage Entry / गिरवी एंट्री बनाएं
+    </h1>
+  </div>
 
-<div>
-<h1 class="text-2xl font-bold text-slate-900">
-Create Mortgage Entry / गिरवी एंट्री बनाएं
-</h1>
-
-<p class="text-sm text-slate-500">
-Krishna Jewelers - Invoice & Mortgage Management
-</p>
-</div>
-
-<button onclick="window.print()" class="no-print bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 rounded-lg flex items-center gap-2 transition">
-Print Receipt / रसीद प्रिंट करें
-</button>
-
+  <div>
+    <img id="proprietorLogo" src="" alt="Proprietor Logo" class="hidden">
+  </div>
 </div>
 
 <form id="mortgage-form" class="max-w-5xl mx-auto">
-
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 items-center">
+  <div>
+    <label class="label">Proprietor / मालिक</label>
+    <select id="cProprietor" class="form-input" required>
+        <option value="">Select Proprietor / मालिक चुनें</option>
+    </select>
+  </div>
+</div>
 <!-- Customer Information -->
 <div class="card">
 
@@ -419,8 +466,6 @@ class="text-sm bg-amber-50 text-amber-700 px-3 py-1 rounded border">
 
 <div id="items-list" class="space-y-4">
 
-<div class="mt-6 pt-4 border-t">
-
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
 <div>
@@ -428,7 +473,7 @@ class="text-sm bg-amber-50 text-amber-700 px-3 py-1 rounded border">
 Estimated Value / अनुमानित कीमत
 </label>
 
-<input id="estValue" class="form-input" placeholder="Estimated Value / कीमत">
+<input id="estValue" class="form-input" placeholder="Estimated Value / कीमत" required>
 </div>
 
 <div>
@@ -440,7 +485,7 @@ Amount Paid / भुगतान राशि
 </div>
 
 </div>
-</div>
+
 
 <!-- ITEMS CONTAINER -->
 <div id="items-container">
@@ -466,30 +511,36 @@ Amount Paid / भुगतान राशि
 <!-- Signature -->
 
 <div class="card">
+    <h3 class="font-bold mb-4 text-slate-700 border-b pb-2">
+        Customer Signature / Fingerprint
+    </h3>
 
-<h3 class="font-bold mb-4 text-slate-700 border-b pb-2">
-Customer Signature / ग्राहक हस्ताक्षर
-</h3>
+    <div class="mb-2 flex gap-2 no-print">
+        <button type="button" id="use-signature" class="btn-primary text-xs px-2 py-1">
+            Signature
+        </button>
+        <button type="button" id="btn-scan-finger" class="bg-green-600 text-white text-xs px-2 py-1 rounded">
+            Scan Fingerprint / अंगूठा स्कैन करें
+        </button>
+    </div>
 
-<canvas id="signature-pad"
-class="border w-full h-40 bg-white rounded touch-none"></canvas>
+    <canvas id="signature-pad" class="border w-full h-40 bg-white rounded touch-none"></canvas>
+    
+    <input type="hidden" id="fingerprintData">
 
-<button type="button" id="clear-sign"
-class="mt-2 text-sm bg-gray-200 px-3 py-1 rounded">
-
-Clear Signature / हस्ताक्षर मिटाएं
-
-</button>
-
+    <button type="button" id="clear-sign" class="mt-2 text-sm bg-gray-200 px-3 py-1 rounded no-print">
+        Clear / मिटाएं
+    </button>
 </div>
 
-<button type="submit"
-class="btn-primary w-full md:w-auto px-12 py-4 mt-6">
-
-Save Mortgage / गिरवी सेव करें
-
+<button onclick="window.print()" class="no-print btn-primary w-full md:w-auto px-12 py-4 mt-4 mb-6">
+  Print Receipt / रसीद प्रिंट करें
 </button>
-
+<button type="submit"
+        class="btn-primary w-full md:w-auto px-12 py-4 mt-6 relative flex items-center justify-center">
+  <span class="loader hidden mr-2 border-2 border-t-2 border-white rounded-full w-5 h-5 animate-spin"></span>
+  <span class="btn-text">Save Mortgage / गिरवी सेव करें</span>
+</button>
 </form>
 
 </div>
@@ -528,6 +579,45 @@ Select Customer / ग्राहक चुनें
 <script src="api.js"></script>
 
 <script>
+    
+const urlParams = new URLSearchParams(window.location.search);
+const mortgageId = urlParams.get("id");
+    async function loadProprietors() {
+    try {
+        const select = document.getElementById("cProprietor");
+        select.innerHTML = '<option value="">Select Proprietor / मालिक चुनें</option>';
+        const res = [{id:1, name:"Poonam Agrawal", logoPath:"/logo/Poonam.jpg"},{id:2, name:"Manorama Bai", logoPath:"/logo/ManoramaBai.PNG"}];
+        res.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.name; // use name instead of id if you want to match your mortgage filter
+            opt.textContent = p.name;
+            opt.dataset.logo = p.logoPath || ""; 
+            select.appendChild(opt);
+        });
+    } catch (e) {
+        console.log("Failed to load proprietors", e);
+    }
+}
+
+// Update logo on select change
+document.getElementById("cProprietor").addEventListener("change", function() {
+    const selected = this.selectedOptions[0];
+    const logo = document.getElementById("proprietorLogo");
+    if(selected && selected.dataset.logo) {
+        logo.src = selected.dataset.logo;
+        logo.classList.remove("hidden"); // now it will show
+    } else {
+        logo.src = "";
+        logo.classList.add("hidden");
+    }
+});
+
+// Call on page load
+document.addEventListener("DOMContentLoaded", () => {
+    setTodayDate();
+    loadProprietors();
+    if(mortgageId) loadMortgage(mortgageId);
+});
     function setTodayDate(){
 
 const today = new Date().toISOString().split('T')[0];
@@ -651,70 +741,67 @@ itemsList.appendChild(newRow);
 });
 
 document.getElementById('mortgage-form').onsubmit = async (e) => {
+    e.preventDefault();
 
-e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const loader = btn.querySelector('.loader');
+    const btnText = btn.querySelector('.btn-text');
 
-const itemElements = document.querySelectorAll('.item-row');
+    // Show loader
+    loader.classList.remove('hidden');
+    btnText.classList.add('hidden');
+    btn.disabled = true;
 
-const items = Array.from(itemElements).map(row => ({
+    try {
+        const itemElements = document.querySelectorAll('.item-row');
 
-name: row.querySelector('.item-name').value,
+        const items = Array.from(itemElements).map(row => ({
+            name: row.querySelector('.item-name').value,
+            grossWeight: parseFloat(row.querySelector('.item-gross').value || 0),
+            netWeight: parseFloat(row.querySelector('.item-net').value || 0),
+            purity: row.querySelector('.item-purity').value
+        }));
 
-grossWeight: parseFloat(row.querySelector('.item-gross').value || 0),
+        const canvas = document.getElementById("signature-pad");
+        const signatureBase64 = canvas.toDataURL();
 
-netWeight: parseFloat(row.querySelector('.item-net').value || 0),
+        const formData = {
+            customerDetails: {
+                id: document.getElementById("customerId").value || null,
+                name: document.getElementById('cName').value,
+                fatherName: document.getElementById('cFather').value,
+                address: document.getElementById('cAddress').value,
+                phoneNumber: document.getElementById('cPhone').value,
+                aadharNumber: document.getElementById('cAadhar').value
+            },
+            itemList: items,
+            proprietor: document.getElementById("cProprietor").value || null,
+            estValue: parseInt(document.getElementById('estValue').value || 0),
+            amountPaid: parseInt(document.getElementById('amountPaid').value || 0),
+            createdAt: document.getElementById('createdAt').value,
+            signatureBase64: signatureBase64,
+            signatureType: mode,
+            settled: false
+        };
 
-purity: row.querySelector('.item-purity').value
+        if(mortgageId) formData.id = mortgageId;
 
-}));
+        await ApiService.saveMortgage(formData);
 
-const canvas = document.getElementById("signature-pad");
+        alert("Mortgage Saved Successfully / गिरवी सफलतापूर्वक सेव हुई");
+        window.location.href = "morgate.html";
 
-const signatureBase64 = canvas.toDataURL();
-
-const formData = {
-
-customerDetails: {
-
-id: document.getElementById("customerId").value || null,
-name: document.getElementById('cName').value,
-
-fatherName: document.getElementById('cFather').value,
-
-address: document.getElementById('cAddress').value,
-
-phoneNumber: document.getElementById('cPhone').value,
-
-aadharNumber: document.getElementById('cAadhar').value
-
-},
-
-itemList: items,
-
-estValue: parseInt(document.getElementById('estValue').value || 0),
-amountPaid: parseInt(document.getElementById('amountPaid').value || 0),
-createdAt: document.getElementById('createdAt').value,
-signatureBase64: signatureBase64,
-
-settled:false
-
+    } catch(err) {
+        console.error(err);
+        alert("Error Saving Mortgage / गिरवी सेव नहीं हुई " + err.message);
+    } finally {
+        // Hide loader
+        loader.classList.add('hidden');
+        btnText.classList.remove('hidden');
+        btn.disabled = false;
+    }
 };
 
-try{
-if(mortgageId){
-formData.id = mortgageId;
-}
-await ApiService.saveMortgage(formData);
-
-alert("Mortgage Saved Successfully / गिरवी सफलतापूर्वक सेव हुई");
-window.location.href = "morgate.html";
-}catch(err){
-
-alert("Error Saving Mortgage / गिरवी सेव नहीं हुई");
-
-}
-
-};
 function fillAmountPaid(val){
 
 document.getElementById("amountPaid").value = val ? val.toString() : "";
@@ -729,93 +816,108 @@ const d = new Date(date).toISOString().split('T')[0];
 document.getElementById("createdAt").value = d;
 
 }
-
-const canvas = document.getElementById("signature-pad");
-const ctx = canvas.getContext("2d");
-
-/* Fix canvas resolution */
-function resizeCanvas() {
-
-    const ratio = Math.max(window.devicePixelRatio || 1, 1);
-
-    canvas.width = canvas.offsetWidth * ratio;
-    canvas.height = canvas.offsetHeight * ratio;
-
-    ctx.scale(ratio, ratio);
+function fillProprietor(pId){
+    const select = document.getElementById("cProprietor");
+    select.value = pId || "";
+    const selected = select.selectedOptions[0];
+    const logo = document.getElementById("proprietorLogo");
+    if(selected && selected.dataset.logo){
+        logo.src = selected.dataset.logo;
+        logo.classList.remove("hidden");
+    } else {
+        logo.src = "";
+        logo.classList.add("hidden");
+    }
 }
 
+document.getElementById("btn-scan-finger").onclick = async () => {
+    try {
+        // 1. Define the capture request XML (Standard for most RD services)
+        const captureXML = `<?xml version="1.0"?> <Opts fCount="1" fType="1" iCount="0" pCount="0" format="0" pidVer="2.0" timeout="10000" posh="UNKNOWN" env="P" />`;
+
+        // 2. Call the local RD Service (Port 11100 is common for Mantra/Startek)
+        // You may need to loop through ports 11100-11105 to find the device
+        const response = await fetch("http://127.0.0.1:11100/rd/capture", {
+            method: "CAPTURE", // Some services use POST, some use CAPTURE
+            body: captureXML
+        });
+
+        const data = await response.text();
+        
+        // 3. Parse the XML response to get the image
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(data, "text/xml");
+        
+        // This depends on your specific scanner's SDK. 
+        // Most return a Base64 string in a <Data> tag.
+        const base64Finger = xmlDoc.getElementsByTagName("Data")[0].textContent;
+
+        if (base64Finger) {
+            mode = "thumbprint";
+            // Draw it onto your existing canvas so it displays on the invoice
+            loadSignature("data:image/png;base64," + base64Finger, "thumbprint");
+            alert("Fingerprint Captured!");
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Fingerprint device not found." + err.message);
+    }
+};
+const canvas = document.getElementById("signature-pad");
+const ctx = canvas.getContext("2d");
+let drawing = false;
+let mode = "signature"; // default
+
+// Resize canvas for high DPI
+function resizeCanvas() {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    ctx.scale(ratio, ratio);
+}
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-
-/* Drawing logic */
-
-let drawing = false;
-
-function startDraw(e) {
-    drawing = true;
-    draw(e);
-}
-
-function endDraw() {
-    drawing = false;
-    ctx.beginPath();
-}
-
+// Drawing functions
+function startDraw(e) { drawing = true; draw(e); }
+function endDraw() { drawing = false; ctx.beginPath(); }
 function draw(e) {
-
     if (!drawing) return;
-
     const rect = canvas.getBoundingClientRect();
+    let x = e.touches ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+    let y = e.touches ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
 
-    let x, y;
-
-    if (e.touches) {
-        x = e.touches[0].clientX - rect.left;
-        y = e.touches[0].clientY - rect.top;
-    } else {
-        x = e.clientX - rect.left;
-        y = e.clientY - rect.top;
-    }
-
-    ctx.lineWidth = 2;
+    ctx.lineWidth = (mode === "signature") ? 2 : 6; // thicker for thumbprint
     ctx.lineCap = "round";
     ctx.strokeStyle = "#000";
 
     ctx.lineTo(x, y);
     ctx.stroke();
-
     ctx.beginPath();
     ctx.moveTo(x, y);
 }
 
-
-/* Mouse events */
-
+// Mouse/Touch events
 canvas.addEventListener("mousedown", startDraw);
 canvas.addEventListener("mouseup", endDraw);
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseleave", endDraw);
 
-
-/* Touch events (mobile support) */
-
 canvas.addEventListener("touchstart", startDraw);
 canvas.addEventListener("touchend", endDraw);
 canvas.addEventListener("touchmove", draw);
 
-
-/* Clear button */
-
+// Clear button
 document.getElementById("clear-sign").onclick = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
+
+// Toggle buttons
+document.getElementById("use-signature").onclick = () => { mode = "signature"; };
+
 // ================================
 // VIEW MODE SUPPORT
 // ================================
-
-const urlParams = new URLSearchParams(window.location.search);
-const mortgageId = urlParams.get("id");
 
 document.addEventListener("DOMContentLoaded", () => {
 if(mortgageId){
@@ -834,6 +936,7 @@ fillItems(data.itemList);
 fillEstValue(data.estValue);
 fillAmountPaid(data.amountPaid);
 fillCreatedAt(data.createdAt);
+fillProprietor(data.proprietor); 
 loadSignature(data.signatureBase64);
 }catch(e){
 console.log(e);
@@ -848,7 +951,7 @@ alert("Failed to load mortgage" + e.message);
 // ================================
 
 function fillCustomer(c){
-
+document.getElementById("customerId").value = c.id || "";
 document.getElementById("cName").value = c.name || "";
 document.getElementById("cFather").value = c.fatherName || "";
 document.getElementById("cPhone").value = c.phoneNumber || "";
@@ -914,23 +1017,18 @@ document.getElementById("estValue").value = val ? val.toString() : "";
 // SIGNATURE
 // ================================
 
-function loadSignature(base64){
+function loadSignature(base64, type){
+    if(!base64) return;
 
-if(!base64) return;
-
-const canvas = document.getElementById("signature-pad");
-const ctx = canvas.getContext("2d");
-
-const img = new Image();
-
-img.onload = () => {
-
-ctx.drawImage(img,0,0,canvas.width,canvas.height);
-
-};
-
-img.src = base64;
-
+    mode = type || "signature"; // set mode for the canvas
+    const canvas = document.getElementById("signature-pad");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+    img.src = base64;
 }
 
 </script>

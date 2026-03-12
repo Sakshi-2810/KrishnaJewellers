@@ -1,478 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Mortgage Records | Krishna Jewelers</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="style.css">
 
 <style>
-    /* ===============================
-GLOBAL
-================================ */
-
+/* ===============================
+GLOBAL STYLES (DASHBOARD THEME)
+=============================== */
 body{
-font-family:"Poppins","Segoe UI",Arial,sans-serif;
-background:#f8fafc;
-margin:0;
-padding:0;
+    font-family:'Poppins',sans-serif;
+    background:#f6f6f6;
+    margin:0;
+    padding:0;
+}
+
+.dashboard-title{
+    font-family:'Great Vibes',cursive;
+    font-size:36px;
+    color:#b45309;
 }
 
 /* ===============================
-MAIN CONTENT (RANKA LAYOUT)
-================================ */
-
-.main-content{
-padding:30px;
-}
-
-/* ===============================
-PAGE HEADER
-================================ */
-
-.page-header{
-background:white;
-padding:20px 24px;
-border-radius:12px;
-margin-bottom:24px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-/* ===============================
-CARD
-================================ */
-
+CARDS
+=============================== */
 .card{
-background:white;
-border-radius:12px;
-padding:22px;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    background:white;
+    border-radius:12px;
+    padding:22px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom:20px;
+    transition:0.25s;
+}
+
+.card:hover{
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    transform:translateY(-2px);
 }
 
 /* ===============================
 TABLE
-================================ */
-
+=============================== */
 .table{
-width:100%;
-border-collapse:collapse;
+    width:100%;
+    border-collapse:collapse;
 }
 
 .table thead{
-background:#f8fafc;
+    background:#f8fafc;
 }
 
 .table th{
-text-align:left;
-padding:12px;
-font-size:13px;
-color:#64748b;
-font-weight:600;
+    text-align:left;
+    padding:12px;
+    font-size:13px;
+    color:#64748b;
+    font-weight:600;
 }
 
 .table td{
-padding:12px;
-border-top:1px solid #e2e8f0;
-font-size:14px;
-color:#334155;
+    padding:12px;
+    border-top:1px solid #e5e7eb;
+    font-size:14px;
+    color:#334155;
 }
 
 .table tr:hover{
-background:#f9fafb;
+    background:#f9fafb;
 }
 
 /* ===============================
 STATUS BADGES
-================================ */
-
+=============================== */
 .status{
-padding:4px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:600;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
 }
 
 .pending{
-background:#fef3c7;
-color:#92400e;
+    background:#fef3c7;
+    color:#92400e;
 }
 
 .settled{
-background:#dcfce7;
-color:#166534;
+    background:#dcfce7;
+    color:#166534;
 }
 
 /* ===============================
 ACTION BUTTONS
-================================ */
-
+=============================== */
 .action-btn{
-padding:6px 12px;
-border-radius:6px;
-font-size:12px;
-cursor:pointer;
-font-weight:600;
-border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    font-size:12px;
+    cursor:pointer;
+    font-weight:600;
+    border:none;
 }
 
 .view-btn{
-background:#2563eb;
-color:white;
+    background:#2563eb;
+    color:white;
 }
 
 .settle-btn{
-background:#16a34a;
-color:white;
+    background:#16a34a;
+    color:white;
 }
 
 .delete-btn{
-background:#ef4444;
-color:white;
+    background:#ef4444;
+    color:white;
 }
 
 /* ===============================
 LOADER
-================================ */
-
+=============================== */
 .loader-overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(255,255,255,0.7);
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999;
-display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    display:none;
 }
 
 .spinner{
-width:50px;
-height:50px;
-border:5px solid #e2e8f0;
-border-top:5px solid #2563eb;
-border-radius:50%;
-animation:spin 1s linear infinite;
+    width:50px;
+    height:50px;
+    border:5px solid #e2e8f0;
+    border-top:5px solid #2563eb;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
 }
 
 @keyframes spin{
-0%{transform:rotate(0)}
-100%{transform:rotate(360deg)}
+    0%{transform:rotate(0)}
+    100%{transform:rotate(360deg)}
 }
 
 /* ===============================
 EMPTY STATE
-================================ */
-
+=============================== */
 .empty{
-text-align:center;
-padding:40px;
-color:#64748b;
-font-size:14px;
+    text-align:center;
+    padding:40px;
+    color:#64748b;
+    font-size:14px;
 }
 
 /* ===============================
 RESPONSIVE
-================================ */
-
+=============================== */
 @media(max-width:768px){
-
-.main-content{
-padding:16px;
-}
-
-.page-header{
-flex-direction:column;
-align-items:flex-start;
-gap:10px;
-}
-
+    .main-content{
+        margin-left:0;
+        padding:16px;
+    }
 }
 </style>
-
 </head>
 
 <body>
 
-<button class="menu-btn" onclick="toggleSidebar()">
-☰
-</button>
-
+<!-- Sidebar Toggle -->
+<button class="menu-btn no-print" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+<div id="sidebar-container" class="sidebar no-print"></div>
 
-<div id="sidebar-container" class="sidebar"></div>
-
-<!-- LOADER -->
-
+<!-- Loader -->
 <div id="loader" class="loader-overlay">
-<div class="spinner"></div>
+    <div class="spinner"></div>
 </div>
 
-<div class="main-content">
+<main class="main-content">
 
-<div class="page-header">
+<!-- Page Title -->
+<header class="flex justify-between items-center mb-6">
+    <div>
+        <h1 class="dashboard-title">Krishna Jewelers</h1>
+        <p class="text-slate-500 text-sm">Mortgage Records / गिरवी रजिस्टर</p>
+    </div>
+    <button onclick="loadMortgages()" class="btn-primary flex items-center gap-2 px-4 py-2">
+        <i data-lucide="refresh-ccw" class="w-4 h-4"></i> Refresh
+    </button>
+</header>
 
-<div>
-
-<h1 class="text-2xl font-bold text-slate-900">
-Mortgage Records / गिरवी रजिस्टर
-</h1>
-
-<p class="text-sm text-slate-500">
-Krishna Jewelers Mortgage Management
-</p>
-
+<!-- Filters -->
+<div class="flex flex-col md:flex-row gap-4 mb-4 items-center">
+    <input type="text" id="searchInput" placeholder="Search by Customer / Phone / Item" class="form-input w-full md:w-1/2">
+    <select id="proprietorFilter" class="form-input w-full md:w-1/4">
+        <option value="">All Proprietors</option>
+    </select>
+    <button class="btn-primary px-4 py-2" onclick="applyFilters()">Apply Filter</button>
 </div>
 
-<button onclick="loadMortgages()"
-class="bg-slate-200 hover:bg-slate-300 px-4 py-2 rounded-lg text-sm">
-
-Refresh
-
-</button>
-
-</div>
-
-
+<!-- Mortgage Table -->
 <div class="card">
-
-<table class="table">
-
-<thead>
-
-<tr>
-
-<th>
-ID<br>
-<span class="text-xs text-slate-400">क्रमांक</span>
-</th>
-
-<th>
-Customer<br>
-<span class="text-xs text-slate-400">ग्राहक</span>
-</th>
-
-<th>
-Phone<br>
-<span class="text-xs text-slate-400">फोन नंबर</span>
-</th>
-
-<th>
-Items<br>
-<span class="text-xs text-slate-400">आइटम</span>
-</th>
-
-<th>
-Estimated Value<br>
-<span class="text-xs text-slate-400">अनुमानित मूल्य</span>
-</th>
-
-<th>
-Status<br>
-<span class="text-xs text-slate-400">स्थिति</span>
-</th>
-
-<th>
-Action<br>
-<span class="text-xs text-slate-400">कार्य</span>
-</th>
-
-</tr>
-
-</thead>
-
-<tbody id="mortgage-table">
-
-</tbody>
-
-</table>
-
-<div id="empty-state" class="empty" style="display:none;">
-No mortgage records found
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Items</th>
+                <th>Estimated Value</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="mortgage-table"></tbody>
+    </table>
+    <div id="empty-state" class="empty" style="display:none;">No mortgage records found</div>
 </div>
 
-</div>
-
-</div>
+</main>
 
 <script src="api.js"></script>
-
 <script>
+lucide.createIcons();
 
 loadSidebar();
 
-function showLoader(){
-document.getElementById("loader").style.display="flex";
+let allMortgages = [];
+
+document.getElementById("searchInput").addEventListener("keyup", applyFilters);
+document.getElementById("proprietorFilter").addEventListener("change", applyFilters);
+
+function showLoader(){ document.getElementById("loader").style.display="flex"; }
+function hideLoader(){ document.getElementById("loader").style.display="none"; }
+
+function applyFilters(){
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const proprietor = document.getElementById("proprietorFilter").value;
+
+    const filtered = allMortgages.filter(m => {
+        const customerMatch = m.customerDetails?.name?.toLowerCase().includes(search) 
+                              || m.customerDetails?.phoneNumber?.includes(search);
+        const itemsMatch = m.itemList?.some(i=> i.name.toLowerCase().includes(search));
+        const proprietorMatch = !proprietor || m.proprietor === proprietor;
+        return (customerMatch || itemsMatch) && proprietorMatch;
+    });
+
+    renderMortgageTable(filtered);
 }
 
-function hideLoader(){
-document.getElementById("loader").style.display="none";
-}
+function renderMortgageTable(mortgages){
+    const table = document.getElementById("mortgage-table");
+    table.innerHTML = "";
+    if(mortgages.length===0){
+        document.getElementById("empty-state").style.display="block";
+        return;
+    } else {
+        document.getElementById("empty-state").style.display="none";
+    }
 
+    mortgages.sort((a,b)=>b.id - a.id);
+    mortgages.forEach(m=>{
+        const items = m.itemList ? m.itemList.map(i=>i.name).join(", ") : "";
+        const tr = document.createElement("tr");
+        tr.innerHTML=`
+            <td>#${m.id}</td>
+            <td>${m.customerDetails?.name || ""}</td>
+            <td>${m.customerDetails?.phoneNumber || ""}</td>
+            <td class="text-xs">${items}</td>
+            <td>₹${m.estValue}</td>
+            <td><span class="status ${m.settled ? 'settled':'pending'}">${m.settled ? 'Settled':'Pending'}</span></td>
+            <td class="flex gap-2">
+                <button class="action-btn view-btn" onclick="viewMortgage(${m.id})">View</button>
+                ${!m.settled ? `<button class="action-btn settle-btn" onclick="settleMortgage(${m.id})">Settle</button>` : ""}
+                <button class="action-btn delete-btn" onclick="deleteMortgage(${m.id})">Delete</button>
+            </td>
+        `;
+        table.appendChild(tr);
+    });
+}
 
 async function loadMortgages(){
-
-showLoader();
-
-try{
-
-const data = await ApiService.getAllMortgages();
-
-const table = document.getElementById("mortgage-table");
-
-table.innerHTML="";
-
-let mortgages = data.data || [];
-
-/* SORT BY ID DESC */
-
-mortgages.sort((a,b)=> b.id - a.id);
-
-if(mortgages.length===0){
-
-document.getElementById("empty-state").style.display="block";
-hideLoader();
-return;
-
+    showLoader();
+    try{
+        const res = await ApiService.getAllMortgages();
+        allMortgages.splice(0, allMortgages.length, ...(res.data || []));
+        renderMortgageTable(allMortgages);
+        populateProprietorFilter();
+    } catch(e){
+        console.error(e);
+        alert("Failed to load mortgages. " + e.message);
+    }
+    hideLoader();
 }
 
-document.getElementById("empty-state").style.display="none";
-
-mortgages.forEach(m=>{
-
-const tr=document.createElement("tr");
-
-let items="";
-
-if(m.itemList){
-items=m.itemList.map(i=>i.name).join(", ");
+function populateProprietorFilter(){
+    const select = document.getElementById("proprietorFilter");
+    const proprietors = [...new Set(allMortgages.map(m=>m.proprietor).filter(Boolean))];
+    select.innerHTML = `<option value="">All Proprietors</option>`;
+    proprietors.forEach(p=>{
+        const opt = document.createElement("option");
+        opt.value=p;
+        opt.textContent=p;
+        select.appendChild(opt);
+    });
 }
 
-tr.innerHTML=`
-
-<td>${m.id}</td>
-
-<td>${m.customerDetails?.name || ""}</td>
-
-<td>${m.customerDetails?.phoneNumber || ""}</td>
-
-<td class="text-xs">${items}</td>
-
-<td>₹ ${m.estValue}</td>
-
-<td>
-<span class="status ${m.settled ? "settled":"pending"}">
-${m.settled ? "Settled":"Pending"}
-</span>
-</td>
-
-<td class="flex gap-2">
-
-<button class="action-btn view-btn"
-onclick="viewMortgage(${m.id})">
-View
-</button>
-
-${
-!m.settled ?
-`<button class="action-btn settle-btn"
-onclick="settleMortgage(${m.id})">
-Settle
-</button>`
-:""
-}
-
-<button class="action-btn delete-btn"
-onclick="deleteMortgage(${m.id})">
-Delete
-</button>
-
-</td>
-
-`;
-
-table.appendChild(tr);
-
-});
-
-}catch(err){
-
-alert("Failed to load mortgages");
-
-}
-
-hideLoader();
-
-}
-function viewMortgage(id){
-
-window.location.href="morgate.html?id="+id;
-
-}
-
+function viewMortgage(id){ window.location.href="morgate.html?id="+id; }
 
 async function settleMortgage(id){
-
-if(!confirm("Mark this mortgage as settled?")) return;
-
-showLoader();
-
-try{
-
-await ApiService.settleMortgage(id);
-
-alert("Mortgage Settled");
-
-loadMortgages();
-
-}catch(e){
-
-alert("Error settling mortgage");
-
+    if(!confirm("Mark this mortgage as settled?")) return;
+    showLoader();
+    try{
+        await ApiService.settleMortgage(id);
+        alert("Mortgage Settled");
+        loadMortgages();
+    } catch(e){ alert("Error settling mortgage. " + e.message); }
+    hideLoader();
 }
-
-hideLoader();
-
-}
-
 
 async function deleteMortgage(id){
-
-if(!confirm("Delete this mortgage permanently?")) return;
-
-showLoader();
-
-try{
-
-await ApiService.deleteMortgage(id);
-
-alert("Mortgage Deleted");
-
-loadMortgages();
-
-}catch(e){
-
-alert("Error deleting mortgage");
-
+    if(!confirm("Delete this mortgage permanently?")) return;
+    showLoader();
+    try{
+        await ApiService.deleteMortgage(id);
+        alert("Mortgage Deleted");
+        loadMortgages();
+    } catch(e){ alert("Error deleting mortgage. " + e.message); }
+    hideLoader();
 }
 
-hideLoader();
-
-}
-
-
 loadMortgages();
-
 </script>
-
 </body>
 </html>

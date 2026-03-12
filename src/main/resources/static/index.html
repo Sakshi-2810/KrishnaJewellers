@@ -104,7 +104,7 @@ Mortgage Dashboard
 <button onclick="location.href='morgate.html'" class="btn-primary flex items-center gap-2">
 
 <i data-lucide="plus" class="w-5 h-5"></i>
-New Mortgage
+New Mortgage / नई गिरवी
 
 </button>
 
@@ -122,7 +122,7 @@ New Mortgage
 </div>
 
 <div>
-<p class="text-sm text-slate-500">Total Customers</p>
+<p class="text-sm text-slate-500">Total Customers / कुल ग्राहक</p>
 <h3 id="stat-customers" class="text-2xl font-semibold">--</h3>
 </div>
 
@@ -136,7 +136,7 @@ New Mortgage
 </div>
 
 <div>
-<p class="text-sm text-slate-500">Active Mortgages</p>
+<p class="text-sm text-slate-500">Active Mortgages / सक्रिय गिरवी</p>
 <h3 id="stat-mortgages" class="text-2xl font-semibold">--</h3>
 </div>
 
@@ -150,7 +150,7 @@ New Mortgage
 </div>
 
 <div>
-<p class="text-sm text-slate-500">Portfolio Value</p>
+<p class="text-sm text-slate-500">Portfolio Value / कुल गिरवी मूल्य</p>
 <h3 id="stat-value" class="text-2xl font-semibold">₹0</h3>
 </div>
 
@@ -162,6 +162,12 @@ New Mortgage
 <!-- RECENT TABLE -->
 
 <div class="table-card">
+<div class="mb-4 flex items-center gap-4">
+    <label for="filterProprietor" class="font-medium text-sm">Filter by Proprietor: / मालिक द्वारा फ़िल्टर करें:</label>
+    <select id="filterProprietor" class="form-input w-60">
+        <option value="">All Proprietors / सभी मालिक</option>
+    </select>
+</div>
 
 <div class="flex justify-between items-center mb-6">
 
@@ -183,11 +189,11 @@ View All
 
 <tr class="border-b">
 
-<th class="pb-4">FORM ID</th>
-<th class="pb-4">CUSTOMER</th>
-<th class="pb-4">ITEMS</th>
-<th class="pb-4">EST VALUE</th>
-<th class="pb-4 text-right">STATUS</th>
+<th class="pb-4">FORM ID / फॉर्म आईडी</th>
+<th class="pb-4">CUSTOMER / ग्राहक</th>
+<th class="pb-4">ITEMS / सामान</th>
+<th class="pb-4">EST VALUE / अनुमानित कीमत</th>
+<th class="pb-4 text-right">STATUS / स्थिति</th>
 
 </tr>
 
@@ -210,7 +216,22 @@ View All
 
 loadSidebar();
 lucide.createIcons();
-
+    async function loadProprietorsFilter() {
+    try {
+        const select = document.getElementById("filterProprietor");
+        select.innerHTML = '<option value="">Select Proprietor / मालिक चुनें</option>';
+        const res = [{id:1, name:"Poonam Agrawal", logoPath:"/logo/Poonam.jpg"},{id:2, name:"Manorama Bai", logoPath:"/logo/ManoramaBai.PNG"}];
+        res.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.name; // use name instead of id if you want to match your mortgage filter
+            opt.textContent = p.name;
+            opt.dataset.logo = p.logoPath || ""; 
+            select.appendChild(opt);
+        });
+    } catch (e) {
+        console.log("Failed to load proprietors", e);
+    }
+    }
 /* Dashboard Data */
 
 async function initDashboard(){
@@ -266,7 +287,7 @@ ${m.settled
 ?'bg-green-100 text-green-700'
 :'bg-amber-100 text-amber-700'}">
 
-${m.settled ? "Settled" : "Active"}
+ ${m.settled ? "Settled / निपटाया गया" : "Active / सक्रिय"}
 
 </span>
 
@@ -285,7 +306,44 @@ console.error("Dashboard Error",err);
 }
 
 initDashboard();
+loadProprietorsFilter();
+document.getElementById("filterProprietor").addEventListener("change", async function() {
+    const selectedProprietor = this.value;
 
+    try {
+        const mortgageRes = await ApiService.getActiveMortgages();
+        let mortgages = mortgageRes.data || [];
+
+        if (selectedProprietor) {
+            mortgages = mortgages.filter(m => m.proprietor === selectedProprietor);
+        }
+
+        const tbody = document.getElementById("recent-mortgages-tbody");
+        const recent = mortgages.slice(-5).reverse();
+
+        tbody.innerHTML = recent.map(m => `
+            <tr class="border-b hover:bg-slate-50">
+                <td class="py-4 text-slate-500 font-mono">#${m.id}</td>
+                <td class="py-4 font-medium">${m.customerDetails ? m.customerDetails.name : "N/A"}</td>
+                <td class="py-4 text-slate-600 text-sm">${m.itemList ? m.itemList.length : 0} items</td>
+                <td class="py-4 font-medium">₹${m.estValue || 0}</td>
+                <td class="py-4 text-right">
+                    <span class="px-3 py-1 rounded-full text-xs ${m.settled ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">
+                        ${m.settled ? "Settled" : "Active"}
+                    </span>
+                </td>
+            </tr>
+        `).join("");
+
+        // Update stats when filtered
+        document.getElementById("stat-mortgages").innerText = mortgages.length;
+        const totalValue = mortgages.reduce((sum,m)=>sum+(m.estValue||0),0);
+        document.getElementById("stat-value").innerText = `₹${totalValue.toLocaleString("en-IN")}`;
+
+    } catch (err) {
+        console.error("Filter Error", err);
+    }
+});
 </script>
 
 </body>

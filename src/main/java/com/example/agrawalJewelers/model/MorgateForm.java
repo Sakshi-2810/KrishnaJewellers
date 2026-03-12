@@ -14,7 +14,9 @@ public class MorgateForm {
     private List<Item> itemList;
     private Integer estValue;
     private String signatureBase64;
+    private String signatureType;
     private boolean settled = false;
     private Integer amountPaid = 0;
     private Date createdAt = new Date();
+    private String proprietor;
 }

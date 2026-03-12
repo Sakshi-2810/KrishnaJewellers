@@ -30,11 +30,8 @@ public class MorgateService {
         }
         customerService.saveCustomer(morgateForm.getCustomerDetails());
         log.info("Saving morgate form with ID: {}", morgateForm.getId());
-        if (Objects.equals(morgateForm.getAmountPaid(), morgateForm.getEstValue())) {
-            morgateForm.setSettled(true);
-        }
+        morgateForm.setSettled(Objects.equals(morgateForm.getAmountPaid(), morgateForm.getEstValue()));
         morgateRepository.save(morgateForm);
-
         return new Response("Morgate form saved successfully with ID: " + morgateForm.getId(), morgateForm);
     }
 
@@ -83,6 +80,7 @@ public class MorgateService {
             return new Response("Morgate form not found for closing with ID: " + id, null);
         }
         morgateForm.setSettled(true);
+        morgateForm.setAmountPaid(morgateForm.getEstValue());
         morgateRepository.save(morgateForm);
         log.info("Closed morgate form with ID: {}", id);
         return new Response("Morgate form closed successfully with ID: " + id, morgateForm);
