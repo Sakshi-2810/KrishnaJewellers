@@ -48,7 +48,33 @@ document.querySelector(".sidebar").classList.remove("open");
 document.querySelector(".sidebar-overlay").style.display="none";
 
 }
+function showAlert(message, type = "info") {
 
+    const alertBox = document.getElementById("customAlert");
+    const alertMsg = document.getElementById("alertMessage");
+    const alertIcon = document.getElementById("alertIcon");
+
+    alertMsg.textContent = message;
+
+    if(type === "success"){
+        alertBox.className = "fixed top-6 right-6 bg-green-100 border border-green-400 text-green-700 shadow-lg rounded-lg px-6 py-4 flex items-center gap-3 z-50";
+        alertIcon.textContent = "✔";
+    }
+    else if(type === "error"){
+        alertBox.className = "fixed top-6 right-6 bg-red-100 border border-red-400 text-red-700 shadow-lg rounded-lg px-6 py-4 flex items-center gap-3 z-50";
+        alertIcon.textContent = "✖";
+    }
+    else{
+        alertBox.className = "fixed top-6 right-6 bg-blue-100 border border-blue-400 text-blue-700 shadow-lg rounded-lg px-6 py-4 flex items-center gap-3 z-50";
+        alertIcon.textContent = "ℹ";
+    }
+
+    alertBox.classList.remove("hidden");
+
+    setTimeout(()=>{
+        alertBox.classList.add("hidden");
+    },3000);
+}
 
 /* =========================
 LOAD SIDEBAR

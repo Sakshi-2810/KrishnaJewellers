@@ -178,6 +178,13 @@ RESPONSIVE
 
 <body>
 
+<div id="customAlert"
+     class="fixed top-6 right-6 hidden bg-white shadow-lg border rounded-lg px-6 py-4 flex items-center gap-3 z-50">
+
+    <span id="alertIcon" class="text-xl"></span>
+    <span id="alertMessage" class="text-gray-700 font-medium"></span>
+
+</div>
 <!-- Sidebar Toggle -->
 <button class="menu-btn no-print" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -300,7 +307,7 @@ async function loadMortgages(){
         populateProprietorFilter();
     } catch(e){
         console.error(e);
-        alert("Failed to load mortgages. " + e.message);
+        showAlert("Failed to load mortgages. " + e.message, "error");
     }
     hideLoader();
 }
@@ -324,9 +331,9 @@ async function settleMortgage(id){
     showLoader();
     try{
         await ApiService.settleMortgage(id);
-        alert("Mortgage Settled");
+        showAlert("Mortgage Settled", "success");
         loadMortgages();
-    } catch(e){ alert("Error settling mortgage. " + e.message); }
+    } catch(e){ showAlert("Error settling mortgage. " + e.message, "error"); }
     hideLoader();
 }
 
@@ -335,9 +342,9 @@ async function deleteMortgage(id){
     showLoader();
     try{
         await ApiService.deleteMortgage(id);
-        alert("Mortgage Deleted");
+        showAlert("Mortgage Deleted", "success");
         loadMortgages();
-    } catch(e){ alert("Error deleting mortgage. " + e.message); }
+    } catch(e){ showAlert("Error deleting mortgage. " + e.message, "error"); }
     hideLoader();
 }
 

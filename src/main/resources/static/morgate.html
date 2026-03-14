@@ -339,6 +339,13 @@ PRINT STYLES
 
 <body class="bg-gray-50">
 
+<div id="customAlert"
+     class="fixed top-6 right-6 hidden bg-white shadow-lg border rounded-lg px-6 py-4 flex items-center gap-3 z-50">
+
+    <span id="alertIcon" class="text-xl"></span>
+    <span id="alertMessage" class="text-gray-700 font-medium"></span>
+
+</div>
 <button class="menu-btn no-print" onclick="toggleSidebar()">
 ☰
 </button>
@@ -519,7 +526,7 @@ Amount Paid / भुगतान राशि
         <button type="button" id="use-signature" class="btn-primary text-xs px-2 py-1">
             Signature
         </button>
-        <button type="button" id="btn-scan-finger" class="bg-green-600 text-white text-xs px-2 py-1 rounded">
+        <button type="button" id="btn-scan-finger" class="btn-primary text-white text-xs px-2 py-1 rounded">
             Scan Fingerprint / अंगूठा स्कैन करें
         </button>
     </div>
@@ -533,14 +540,24 @@ Amount Paid / भुगतान राशि
     </button>
 </div>
 
-<button onclick="window.print()" class="no-print btn-primary w-full md:w-auto px-12 py-4 mt-4 mb-6">
-  Print Receipt / रसीद प्रिंट करें
-</button>
-<button type="submit"
-        class="btn-primary w-full md:w-auto px-12 py-4 mt-6 relative flex items-center justify-center">
-  <span class="loader hidden mr-2 border-2 border-t-2 border-white rounded-full w-5 h-5 animate-spin"></span>
-  <span class="btn-text">Save Mortgage / गिरवी सेव करें</span>
-</button>
+<div class="flex flex-wrap gap-4 mt-6 no-print">
+
+    <button onclick="window.print()"
+            class="btn-primary px-12 py-4">
+        Print Receipt / रसीद प्रिंट करें
+    </button>
+
+    <button type="submit"
+            class="btn-primary px-12 py-4 relative flex items-center justify-center">
+        <span class="loader hidden mr-2 border-2 border-t-2 border-white rounded-full w-5 h-5 animate-spin"></span>
+        <span class="btn-text">Save Mortgage / गिरवी सेव करें</span>
+    </button>
+
+    <button onclick="window.location.href='morgate.html'" class="btn-secondary px-12 py-4">
+        New Form / नया फॉर्म 
+    </button>
+
+</div>
 </form>
 
 </div>
@@ -564,7 +581,10 @@ Select Customer / ग्राहक चुनें
 <thead>
 <tr class="border-b text-sm text-slate-500">
 <th>Name</th>
+<th>Father</th>
+<th>Adhaar</th>
 <th>Phone</th>
+<th>Address</th>
 <th>Action</th>
 </tr>
 </thead>
@@ -645,7 +665,10 @@ list.innerHTML += `
 <tr class="border-b text-sm">
 
 <td class="py-2">${c.name}</td>
+<td>${c.fatherName}</td>
+<td>${c.aadharNumber}</td>
 <td>${c.phoneNumber}</td>
+<td>${c.address}</td>
 
 <td>
 <button
@@ -786,14 +809,20 @@ document.getElementById('mortgage-form').onsubmit = async (e) => {
 
         if(mortgageId) formData.id = mortgageId;
 
-        await ApiService.saveMortgage(formData);
+        let res = await ApiService.saveMortgage(formData);
+        let data = res.data.data || res.data; // handle both {data: {...}} and direct {...}
 
-        alert("Mortgage Saved Successfully / गिरवी सफलतापूर्वक सेव हुई");
-        window.location.href = "morgate.html";
+        showAlert("Mortgage Saved Successfully / गिरवी सफलतापूर्वक सेव हुई", "success");
+        window.location.href = "morgate.html?id=" + data.id;
+
+        //promt user to print receipt
+        if(confirm("Do you want to print the receipt now? / क्या आप अभी रसीद प्रिंट करना चाहते हैं?")){
+            window.print();
+        }
 
     } catch(err) {
         console.error(err);
-        alert("Error Saving Mortgage / गिरवी सेव नहीं हुई " + err.message);
+        showAlert("Error Saving Mortgage / गिरवी सेव नहीं हुई " + err.message, "error");
     } finally {
         // Hide loader
         loader.classList.add('hidden');
@@ -856,11 +885,11 @@ document.getElementById("btn-scan-finger").onclick = async () => {
             mode = "thumbprint";
             // Draw it onto your existing canvas so it displays on the invoice
             loadSignature("data:image/png;base64," + base64Finger, "thumbprint");
-            alert("Fingerprint Captured!");
+            showAlert("Fingerprint Captured!", "success");
         }
     } catch (err) {
         console.error(err);
-        alert("Fingerprint device not found." + err.message);
+        showAlert("Fingerprint device not found." + err.message, "error");
     }
 };
 const canvas = document.getElementById("signature-pad");
@@ -940,7 +969,7 @@ fillProprietor(data.proprietor);
 loadSignature(data.signatureBase64);
 }catch(e){
 console.log(e);
-alert("Failed to load mortgage" + e.message);
+showAlert("Failed to load mortgage" + e.message, "error");
 }
 
 }

@@ -78,16 +78,35 @@ tr:hover { background: #f9fafb; }
 }
 
 /* MODAL */
-.modal { position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; }
+.modal { position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; z-index:100; }
 .modal-box { background:white; padding:25px; border-radius:12px; width:600px; max-width:92%; }
 .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
 .modal-close { background:none; border:none; font-size:18px; cursor:pointer; color:#666; }
 .modal-close:hover { color:#000; }
 
 /* LOADER */
-.loader-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center; z-index:999; display:none; }
-.spinner { width:50px; height:50px; border:5px solid #e2e8f0; border-top:5px solid #2563eb; border-radius:50%; animation:spin 1s linear infinite; }
+.loader-overlay { 
+    position:fixed; top:0; left:0; width:100%; height:100%; 
+    background:rgba(255,255,255,0.7); display:flex; 
+    align-items:center; justify-content:center; 
+    z-index:999; display:none; 
+}
+.spinner { 
+    width:50px; height:50px; border:5px solid #e2e8f0; 
+    border-top:5px solid #2563eb; border-radius:50%; 
+    animation:spin 1s linear infinite; 
+}
 @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg);} }
+
+/* BUTTON LOADER */
+.btn-loader { 
+    border:2px solid rgba(255,255,255,0.3); 
+    border-top:2px solid #fff; 
+    border-radius:50%; 
+    width:18px; height:18px; 
+    animation:spin 1s linear infinite; 
+    display:inline-block; margin-right:8px; vertical-align:middle; 
+}
 
 /* EMPTY STATE */
 .empty { text-align:center; padding:40px; color:#64748b; font-size:14px; }
@@ -97,6 +116,13 @@ tr:hover { background: #f9fafb; }
 
 <body>
 
+<div id="customAlert"
+     class="fixed top-6 right-6 hidden bg-white shadow-lg border rounded-lg px-6 py-4 flex items-center gap-3 z-50">
+
+    <span id="alertIcon" class="text-xl"></span>
+    <span id="alertMessage" class="text-gray-700 font-medium"></span>
+
+</div>
 <!-- Sidebar Button -->
 <button class="menu-btn" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -114,8 +140,9 @@ tr:hover { background: #f9fafb; }
             <h1 class="dashboard-title">Krishna Jewelers</h1>
             <p class="text-slate-500 text-sm">Customer Directory / ग्राहक सूची</p>
         </div>
-        <button onclick="loadCustomers()" class="btn-primary flex items-center gap-2 px-4 py-2">
-            <i data-lucide="refresh-ccw" class="w-4 h-4"></i> Refresh
+        <button onclick="loadCustomers(this)" class="btn-primary flex items-center gap-2 px-4 py-2">
+            <span class="btn-loader" style="display:none;"></span>
+            <span class="btn-text"><i data-lucide="refresh-ccw" class="w-4 h-4"></i> Refresh</span>
         </button>
     </header>
 
@@ -180,51 +207,78 @@ function outsideClose(e){ if(e.target.id==="mortgageModal"){ closeModal(); } }
 
 document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ closeModal(); } });
 
-async function loadCustomers(){
+async function loadCustomers(button=null){
+    if(button){
+        const loader = button.querySelector(".btn-loader");
+        const text = button.querySelector(".btn-text");
+        loader.style.display="inline-block";
+        text.style.display="none";
+    }
     showLoader();
-    const res = await ApiService.getAllCustomers();
-    const customers = res.data || [];
-    const list = document.getElementById("customer-list");
-    list.innerHTML="";
-    if(customers.length===0){ document.getElementById("empty-state").style.display="block"; hideLoader(); return; }
-    document.getElementById("empty-state").style.display="none";
-    customers.forEach(c=>{
-        const tr = document.createElement("tr");
-        tr.onclick = ()=>viewCustomerMortgages(c.id);
-        tr.innerHTML=`
-            <td>${c.name}</td>
-            <td>${c.fatherName}</td>
-            <td>${c.phoneNumber}</td>
-            <td>${c.aadharNumber}</td>
-            <td>${c.address}</td>
-            <td>
-                <div class="action-cell">
-                    <span class="btn-view">View</span>
-                    <button class="btn-delete" onclick="event.stopPropagation(); deleteCustomer(${c.id})">Delete</button>
-                </div>
-            </td>`;
-        list.appendChild(tr);
-    });
-    hideLoader();
+    try{
+        const res = await ApiService.getAllCustomers();
+        const customers = res.data || [];
+        const list = document.getElementById("customer-list");
+        list.innerHTML="";
+        if(customers.length===0){ 
+            document.getElementById("empty-state").style.display="block"; 
+            return;
+        }
+        document.getElementById("empty-state").style.display="none";
+        customers.forEach(c=>{
+            const tr = document.createElement("tr");
+            tr.onclick = ()=>viewCustomerMortgages(c.id);
+            tr.innerHTML=`
+                <td>${c.name}</td>
+                <td>${c.fatherName}</td>
+                <td>${c.phoneNumber}</td>
+                <td>${c.aadharNumber}</td>
+                <td>${c.address}</td>
+                <td>
+                    <div class="action-cell">
+                        <span class="btn-view">View</span>
+                        <button class="btn-delete" onclick="event.stopPropagation(); deleteCustomer(${c.id})">Delete</button>
+                    </div>
+                </td>`;
+            list.appendChild(tr);
+        });
+    }catch(err){
+        console.error(err);
+        showAlert("Failed to load customers " + err.message, "error");
+    }finally{
+        hideLoader();
+        if(button){
+            const loader = button.querySelector(".btn-loader");
+            const text = button.querySelector(".btn-text");
+            loader.style.display="none";
+            text.style.display="inline-block";
+        }
+    }
 }
 
 async function viewCustomerMortgages(id){
     showLoader();
-    const res = await ApiService.getMorgateByCustomerId(id);
-    const list = document.getElementById("customer-mortgage-list");
-    list.innerHTML="";
-    (res.data||[]).forEach(m=>{
-        const items = m.itemList?.map(i=>i.name).join(", ");
-        list.innerHTML+=`
-            <tr>
-                <td>#${m.id}</td>
-                <td>${items}</td>
-                <td>₹${m.estValue}</td>
-                <td>${m.settled ? 'Settled':'Pending'}</td>
-            </tr>`;
-    });
-    document.getElementById("mortgageModal").style.display="flex";
-    hideLoader();
+    try{
+        const res = await ApiService.getMorgateByCustomerId(id);
+        const list = document.getElementById("customer-mortgage-list");
+        list.innerHTML="";
+        (res.data||[]).forEach(m=>{
+            const items = m.itemList?.map(i=>i.name).join(", ");
+            list.innerHTML+=`
+                <tr>
+                    <td>#${m.id}</td>
+                    <td>${items}</td>
+                    <td>₹${m.estValue}</td>
+                    <td>${m.settled ? 'Settled':'Pending'}</td>
+                </tr>`;
+        });
+        document.getElementById("mortgageModal").style.display="flex";
+    }catch(err){
+        console.error(err);
+        showAlert("Failed to load mortgages. " + err.message, "error");
+    }finally{
+        hideLoader();
+    }
 }
 
 function filterCustomers(){
@@ -236,9 +290,19 @@ function filterCustomers(){
 
 async function deleteCustomer(id){
     if(!confirm("Delete this customer?")) return;
-    await ApiService.deleteCustomer(id);
-    loadCustomers();
+    showLoader();
+    try{
+        await ApiService.deleteCustomer(id);
+        loadCustomers();
+        showAlert("Customer Deleted", "success");
+    }catch(err){
+        console.error(err);
+        showAlert("Failed to delete customer. " + err.message, "error");
+    }finally{
+        hideLoader();
+    }
 }
+
 loadCustomers();
 </script>
 
