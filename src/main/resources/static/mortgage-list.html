@@ -222,13 +222,14 @@ RESPONSIVE
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Customer</th>
-                <th>Phone</th>
-                <th>Items</th>
-                <th>Estimated Value</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>ID / आईडी</th>
+                <th>Customer / ग्राहक</th>
+                <th>Phone / फोन</th>
+                <th>Items / सामान</th>
+                <th>Estimated Value / अनुमानित मूल्य</th>
+                <th>Remaining Value / शेष मूल्य</th>
+                <th>Status / स्थिति</th>
+                <th>Action / कार्य</th>
             </tr>
         </thead>
         <tbody id="mortgage-table"></tbody>
@@ -287,6 +288,7 @@ function renderMortgageTable(mortgages){
             <td>${m.customerDetails?.phoneNumber || ""}</td>
             <td class="text-xs">${items}</td>
             <td>₹${m.estValue}</td>
+            <td>₹${(m.estValue || 0) - (m.amountPaid || 0)}</td>
             <td><span class="status ${m.settled ? 'settled':'pending'}">${m.settled ? 'Settled':'Pending'}</span></td>
             <td class="flex gap-2">
                 <button class="action-btn view-btn" onclick="viewMortgage(${m.id})">View</button>

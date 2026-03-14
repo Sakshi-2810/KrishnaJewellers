@@ -192,7 +192,7 @@ View All
 <th class="pb-4">FORM ID / फॉर्म आईडी</th>
 <th class="pb-4">CUSTOMER / ग्राहक</th>
 <th class="pb-4">ITEMS / सामान</th>
-<th class="pb-4">EST VALUE / अनुमानित कीमत</th>
+<th class="pb-4">REMAINING VALUE / कीमत</th>
 <th class="pb-4 text-right">STATUS / स्थिति</th>
 
 </tr>
@@ -250,7 +250,7 @@ const mortgages = mortgageRes.data || [];
 document.getElementById("stat-mortgages").innerText = mortgages.length;
 
 
-const totalValue = mortgages.reduce((sum,m)=>sum+(m.estValue||0),0);
+const totalValue = mortgages.reduce((sum,m)=>sum+(m.estValue||0) - (m.amountPaid||0),0);
 
 document.getElementById("stat-value").innerText =
 `₹${totalValue.toLocaleString("en-IN")}`;
@@ -277,7 +277,7 @@ ${m.itemList ? m.itemList.length : 0} items
 </td>
 
 <td class="py-4 font-medium">
-₹${m.estValue || 0}
+₹${(m.estValue || 0) - (m.amountPaid || 0)}
 </td>
 
 <td class="py-4 text-right">

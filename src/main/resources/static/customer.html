@@ -157,12 +157,12 @@ tr:hover { background: #f9fafb; }
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Father</th>
-                    <th>Phone</th>
-                    <th>Aadhar</th>
-                    <th>Address</th>
-                    <th>Action</th>
+                    <th>Name / नाम</th>
+                    <th>Father / पिता का नाम</th>
+                    <th>Phone / फोन</th>
+                    <th>Aadhar / आधार</th>
+                    <th>Address / पता</th>
+                    <th>Action / कार्य</th>
                 </tr>
             </thead>
             <tbody id="customer-list"></tbody>
@@ -182,10 +182,10 @@ tr:hover { background: #f9fafb; }
         <table style="width:100%; margin-top:10px">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Items</th>
-                    <th>Value</th>
-                    <th>Status</th>
+                    <th>ID / आईडी</th>
+                    <th>Items / सामान</th>
+                    <th>Value Pending / बकाया राशि</th>
+                    <th>Status / स्थिति</th>
                 </tr>
             </thead>
             <tbody id="customer-mortgage-list"></tbody>
@@ -268,7 +268,7 @@ async function viewCustomerMortgages(id){
                 <tr>
                     <td>#${m.id}</td>
                     <td>${items}</td>
-                    <td>₹${m.estValue}</td>
+                    <td>₹${(m.estValue || 0) - (m.amountPaid || 0)}</td>
                     <td>${m.settled ? 'Settled':'Pending'}</td>
                 </tr>`;
         });
